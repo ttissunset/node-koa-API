@@ -15,13 +15,13 @@ const seq = new Sequelize(MYSQL_DB, MYSQL_USER, MYSQL_PWD, {
 })
 
 // 测试mysql是否链接成功
-seq
-  .authenticate()
-  .then(() => {
-    console.log('数据库连接成功')
-  })
-  .catch((err) => {
-    console.error('Unable to connect to the database:', err)
-  })
+// seq
+//   .authenticate()
+//   .then(() => {
+//     console.log('数据库连接成功')
+//   })
+//   .catch((err) => {
+//     console.error('Unable to connect to the database:', err)
+//   })
 
 module.exports = seq
