@@ -17,6 +17,7 @@ class userService {
     return res.dataValues
   }
 
+  // 对数据库进行户数查询 
   async getUserinfo({ id, user_name, password, is_admin }) {
     // 定义where查询条件
     const whereOpt = {}
