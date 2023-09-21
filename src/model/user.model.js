@@ -7,7 +7,7 @@ const seq = require('../db/seq')
 const User = seq.define('user', {
   //! id 字段seq会自动创建并管理，不需要手动设置
   // 定义字段
-  username: {
+  user_name: {
     type: DataTypes.STRING,
     // 设置字段为唯一值
     unique: true,
