@@ -1,8 +1,9 @@
+const bcrypt = require('bcryptjs')
+
 const { getUserinfo } = require('../service/user.service')
 const {
   userFormatError,
   userAlreadyExisted,
-  user,
   userRegisterError,
 } = require('../constant/error.type.js')
 // 检测数据合法性 --> 判断明码或用户名是否为空
@@ -40,7 +41,20 @@ const verifyUser = async (ctx, next) => {
   await next()
 }
 
+// 对密码进行加密
+const cryptPassword = async (ctx,next)=>{
+  // 从 ctx 中获取密码
+  const { password } = ctx.request.body
+  // 设置加盐次数
+  const salt = bcrypt.genSaltSync(10)
+  // 对密码进行十次加盐，hash为加密后的密码
+  const hash = bcrypt.hashSync(password, salt)
+  // 将加密后的密码覆盖原密码
+  ctx.request.body.password = hash
+  await next()
+}
 module.exports = {
   userValidate,
   verifyUser,
+  cryptPassword
 }
