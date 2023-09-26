@@ -1,12 +1,17 @@
 const jwt = require('jsonwebtoken')
 
 // 导入操作数据库的方法
-const { createUser, getUserinfo } = require('../service/user.service')
+const {
+  createUser,
+  getUserinfo,
+  updateById,
+} = require('../service/user.service')
 const { userRegisterError } = require('../constant/error.type')
 
 const { JWT_SECRET } = require('../config/config.default')
 
 class userController {
+  // 注册
   async register(ctx, next) {
     // 获取数据
     // console.log(ct.request.body);
@@ -32,6 +37,7 @@ class userController {
     }
   }
 
+  // 登录
   async login(ctx, next) {
     try {
       const { user_name } = ctx.request.body
@@ -49,6 +55,30 @@ class userController {
     } catch (err) {
       console.error('用户登录失败', err)
     }
+  }
+
+  // 修改密码
+  async changePassword(ctx, next) {
+    // 1.获取新密码
+    const id = ctx.state.user.id
+    const password = ctx.request.body.password
+    // console.log(id, password)
+    // 2.操作数据库
+    if (await updateById({ id, password })) {
+      ctx.body = {
+        code: 0,
+        msg: '修改密码成功',
+        result: '',
+      }
+    } else {
+      ctx.body = {
+        code: '10007',
+        message: '修改密码失败！！',
+        result: '',
+      }
+    }
+
+    // 3.返回结果
   }
 }
 
