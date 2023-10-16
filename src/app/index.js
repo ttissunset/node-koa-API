@@ -7,10 +7,13 @@ const errHandler = require('./error.handle')
 // 引入解析body参数的中间件并注册
 const{ koaBody} = require('koa-body')
 const koaStaic = require('koa-static')
+const parameter = require('koa-parameter')
 
 const app = new Koa()
 
 const router = require('../router')
+
+
 
 app.use(
   koaBody({
@@ -27,6 +30,9 @@ app.use(
 )
 // 使用 koa-static 中间件将upload文件夹配置为静态资源
 app.use(koaStaic(path.join(__dirname, '../upload')))
+
+app.use(parameter(app))
+
 app.use(router.routes()).use(router.allowedMethods())
 
 // 统一的错误处理

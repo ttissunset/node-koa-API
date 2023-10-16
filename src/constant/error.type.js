@@ -53,5 +53,10 @@ module.exports = {
     code: '10202',
     message: '不支持的文件类型！！',
     result: '',
+  },
+  goodsFormatError:{
+    code: '10203',
+    message: '商品擦参数格式错误！！',
+    result: '',
   }
 }
