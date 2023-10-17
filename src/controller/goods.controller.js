@@ -4,10 +4,13 @@ const {
   fileUploadError,
   unSupportedFileType,
   publishGoodsError,
+  invalidgoodsId
 } = require('../constant/error.type')
 
-const { createGoods } = require('../service/goods.service')
+const { createGoods, upadetaGoods } = require('../service/goods.service')
+
 class GoodsController {
+  // 上传图片的路由处理中间件
   async upload(ctx, next) {
     // 从  ctx.request.files 中解构出 名称为 file 的文件
     const { file } = ctx.request.files
@@ -33,6 +36,7 @@ class GoodsController {
     }
   }
 
+  // 发布商品的路由处理中间件
   async create(ctx) {
     // 直接调用service的createGoods方法
     try {
@@ -45,6 +49,24 @@ class GoodsController {
     } catch (err) {
       console.error(err)
       return ctx.app.emit('err', publishGoodsError, ctx)
+    }
+  }
+
+  // 修改商品的路由处理中间件
+  async update(ctx) {
+    try {
+      const res = await upadetaGoods(ctx.params.id, ctx.request.body)
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '修改成功商品！！',
+          result: '',
+        }
+      } else {
+        return ctx.app.emit('error', invalidgoodsId, ctx)
+      }
+    } catch (err) {
+      console.error(err)
     }
   }
 }
