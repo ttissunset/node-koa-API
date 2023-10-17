@@ -4,13 +4,19 @@ const {
   fileUploadError,
   unSupportedFileType,
   publishGoodsError,
-  invalidgoodsId
+  invalidgoodsId,
 } = require('../constant/error.type')
 
-const { createGoods, upadetaGoods } = require('../service/goods.service')
+const {
+  createGoods,
+  upadetaGoods,
+  removeGoods,
+  softRemoveGoods,
+  restoreGoods,
+} = require('../service/goods.service')
 
 class GoodsController {
-  // 上传图片的路由处理中间件
+  // 上传图片的处理函数
   async upload(ctx, next) {
     // 从  ctx.request.files 中解构出 名称为 file 的文件
     const { file } = ctx.request.files
@@ -36,7 +42,7 @@ class GoodsController {
     }
   }
 
-  // 发布商品的路由处理中间件
+  // 发布商品的处理函数
   async create(ctx) {
     // 直接调用service的createGoods方法
     try {
@@ -52,7 +58,7 @@ class GoodsController {
     }
   }
 
-  // 修改商品的路由处理中间件
+  // 修改商品的处理函数
   async update(ctx) {
     try {
       const res = await upadetaGoods(ctx.params.id, ctx.request.body)
@@ -60,6 +66,53 @@ class GoodsController {
         ctx.body = {
           code: 0,
           message: '修改成功商品！！',
+          result: '',
+        }
+      } else {
+        return ctx.app.emit('error', invalidgoodsId, ctx)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  // 硬删除商品接口
+  async remove(ctx) {
+    await removeGoods(ctx.params.id)
+
+    ctx.body = {
+      code: 0,
+      message: '删除成功！！',
+      result: '',
+    }
+  }
+
+  // 下架商品处理函数
+  async softRemove(ctx) {
+    try {
+      const res = await softRemoveGoods(ctx.params.id)
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '下架商品成功！！',
+          result: '',
+        }
+      } else {
+        return ctx.app.emit('error', invalidgoodsId, ctx)
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  // 上架商品处理函数
+  async restore(ctx) {
+    try {
+      const res = await restoreGoods(ctx.params.id)
+      if (res) {
+        ctx.body = {
+          code: 0,
+          message: '上架商品成功！！',
           result: '',
         }
       } else {
