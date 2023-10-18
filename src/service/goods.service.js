@@ -26,10 +26,36 @@ class goodsService {
     return res > 0 ? true : false
   }
 
-  async restoreGoods(id){
+  async restoreGoods(id) {
     // 通过id上架数据表中的商品
     const res = await Goods.restore({ where: { id } })
     return res > 0 ? true : false
+  }
+
+  async findGoods(pageNum, pageSize) {
+    // 1.获取总数
+    // const count = await Goods.count()
+    // 2.获取分页数据
+    // const offset = (pageNum - 1) * pageSize
+    // const rows = await Goods.findAll({
+    //   offset: offset,
+    //   limit: pageSize * 1,
+    // })
+
+
+    // 优化：将第一步和第二步进行合并操作
+    const offset = (pageNum - 1) * pageSize
+    const { count, rows } = await Goods.findAndCountAll({
+      offset: offset,
+      limit: pageSize * 1,
+    })
+
+    return {
+      pageNum,
+      pageSize,
+      total: count,
+      list: rows,
+    }
   }
 }
 

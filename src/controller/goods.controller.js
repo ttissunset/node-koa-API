@@ -13,6 +13,7 @@ const {
   removeGoods,
   softRemoveGoods,
   restoreGoods,
+  findGoods,
 } = require('../service/goods.service')
 
 class GoodsController {
@@ -120,6 +121,22 @@ class GoodsController {
       }
     } catch (err) {
       console.error(err)
+    }
+  }
+
+  // 获取所有商品的处理函数
+  async findAll(ctx) {
+    // 1.解析pageNum和pageSize参数
+    const { pageNum = 1, pageSize = 10 } = ctx.request.query
+    // 2.调佣数据处理的方法
+    const res = await findGoods(pageNum, pageSize)
+    // 3.返回结果
+    ctx.body = {
+      code: 0,
+      message: '获取商品列表成功！！',
+      result: {
+        res,
+      },
     }
   }
 }
