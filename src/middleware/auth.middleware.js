@@ -14,6 +14,7 @@ const auth = async (ctx, next) => {
     // user 包含 payload 的信息
     //  jwt.verify(要检测的token, token加密私钥) --> 用于检测token是否匹配
     const user = jwt.verify(token, JWT_SECRET)
+    // 将登录成功的用户信息挂载到 ctx.state.user 下
     ctx.state.user = user
     // console.log(ctx.state.user);
   } catch (err) {
