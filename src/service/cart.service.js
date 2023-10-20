@@ -60,10 +60,21 @@ class cartService {
       return ''
     }
 
+    // 判断是否有传入以下两个参数 ，如果没有传入则不操作
     number !== undefined ? (res.number = number) : ''
     selected !== undefined ? (res.selected = selected) : ''
 
     return await res.save()
+  }
+
+  async removeCarts(ids) {
+    return await Cart.destroy({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    })
   }
 }
 

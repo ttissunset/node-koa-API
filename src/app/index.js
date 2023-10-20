@@ -24,6 +24,8 @@ app.use(
       // 保留文件后缀名
       keepExtensions: true,
     },
+    // 配置koa-body中间件，使以下方法的body参数可以挂载到ctx.request.body下
+    parsedMethods:['POST','PUT','PATCH','DELETE']
   })
 )
 // 使用 koa-static 中间件将upload文件夹配置为静态资源
