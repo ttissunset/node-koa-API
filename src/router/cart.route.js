@@ -8,6 +8,8 @@ const {
   findAll,
   update,
   remove,
+  selectAll,
+  unSelectAll
 } = require('../controller/cart.controller')
 
 //添加购物车接口
@@ -29,5 +31,11 @@ router.patch(
 
 // 删除购物车
 router.delete('/', auth, validator({ ids: 'array' }), remove)
+
+// 全选
+router.post('/selectAll',auth,selectAll)
+
+// 全不选
+router.post('/unSelectAll',auth,unSelectAll)
 
 module.exports = router

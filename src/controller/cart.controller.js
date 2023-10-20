@@ -2,7 +2,9 @@ const {
   createOrUpdate,
   findCarts,
   updateCarts,
-  removeCarts
+  removeCarts,
+  selectAllCarts,
+  unSelectAllCarts
 } = require('../service/cart.service')
 const { cartFormatError } = require('../constant/error.type')
 
@@ -65,6 +67,32 @@ class cartController {
       code: 200,
       message: '删除购物车成功！！',
       result: res,
+    }
+  }
+
+  // 全选
+  async selectAll(ctx) {
+    const  user_id  = ctx.state.user.id
+
+    const res = await selectAllCarts(user_id)
+
+    ctx.body = {
+      code: 200,
+      message: '全选购物车成功！！',
+      data: res,
+    }
+  }
+
+  // 全不选
+  async unSelectAll(ctx) {
+    const  user_id  = ctx.state.user.id
+
+    const res = await unSelectAllCarts(user_id)
+
+    ctx.body = {
+      code: 200,
+      message: '全不选购物车成功！！',
+      data: res,
     }
   }
 }
