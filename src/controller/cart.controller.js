@@ -1,4 +1,5 @@
-const { createOrUpdate, findCarts } = require('../service/cart.service')
+const { createOrUpdate, findCarts,updateCarts } = require('../service/cart.service')
+const { cartFormatError } = require('../constant/error.type')
 
 class cartController {
   // 处理 将商品添加到购物车的 函数
@@ -28,6 +29,24 @@ class cartController {
       code: 200,
       message: '获取购物车列表成功！！',
       result: res,
+    }
+  }
+
+  // 更新购物车
+  async update(ctx) {
+    // 解析请求参数
+    const { id } = ctx.request.params
+    const { number, selected } = ctx.request.body
+    if (number === undefined && selected === undefined) {
+      cartFormatError.message = 'number和selected不能同时为空！！'
+      ctx.app.emit('error', cartFormatError, ctx)
+    }
+
+    const res = await updateCarts({ id, number, selected })
+    ctx.body = {
+      code: 200,
+      message: '更新购物车成功！！',
+      data: res,
     }
   }
 }

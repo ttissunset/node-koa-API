@@ -34,15 +34,15 @@ class cartService {
     const offset = (pageNum - 1) * pageSize
     const { count, rows } = await Cart.findAndCountAll({
       // 通过 attributes 指定要查找的字段
-      attributes:['id','number','selected'],
+      attributes: ['id', 'number', 'selected'],
       offset: offset,
       limit: pageSize * 1,
-      include:{
+      include: {
         model: Goods,
-        as:'goods_info',
+        as: 'goods_info',
         // 指定要查找的字段
-        attributes: ['id','goods_name','goods_price','goods_img']
-      }
+        attributes: ['id', 'goods_name', 'goods_price', 'goods_img'],
+      },
     })
 
     return {
@@ -51,6 +51,19 @@ class cartService {
       total: count,
       list: rows,
     }
+  }
+
+  async updateCarts(params) {
+    const { id, number, selected } = params
+    const res = await Cart.findByPk(id)
+    if (!res) {
+      return ''
+    }
+
+    number !== undefined ? (res.number = number) : ''
+    selected !== undefined ? (res.selected = selected) : ''
+
+    return await res.save()
   }
 }
 
