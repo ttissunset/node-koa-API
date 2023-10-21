@@ -73,5 +73,10 @@ module.exports = {
     code: '10301',
     message: '购物车参数格式错误！！',
     result: '',
+  },
+  addrFormatError:{
+    code: '10401',
+    message: '地址参数格式错误！！',
+    result: '',
   }
 }
