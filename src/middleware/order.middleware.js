@@ -1,12 +1,13 @@
-const { addrFormatError } = require('../constant/error.type')
+const { orderFormatError } = require('../constant/error.type')
 
 const validator = (rules) => {
   return async (ctx, next) => {
     try {
       ctx.verifyParams(rules)
     } catch (err) {
-      addrFormatError.result = err.message
-      return ctx.app.emit('error', addrFormatError, ctx)
+      console.error(err)
+      orderFormatError.result = err.message
+      ctx.app.emit('error', orderFormatError, ctx)
     }
     await next()
   }

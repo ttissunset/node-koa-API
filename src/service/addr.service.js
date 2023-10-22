@@ -21,11 +21,16 @@ class AddrService {
   async removeAddr(id) {
     return await Address.destroy({
       where: {
-        id: {
-          [Op.in]: ids,
-        },
+        id,
       },
     })
+  }
+
+  async setDefaultAddr(user_id, id) {
+    // 先将该用户的所有地址设置为非默认地址
+    await Address.update({is_default: false,},{where: {user_id}})
+    // 再根据id将该用户的对应地址设置为默认地址
+    return await Address.update({is_default: true,},{where: {id}})
   }
 }
 

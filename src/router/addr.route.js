@@ -9,6 +9,7 @@ const {
   findAll,
   update,
   remove,
+  setDefault
 } = require('../controller/addr.controller')
 
 // 添加地址
@@ -46,5 +47,8 @@ router.put(
 
 // 删除地址
 router.delete('/:id', auth, remove)
+
+// 设置默认
+router.patch('/:id',auth,setDefault)
 
 module.exports = router
