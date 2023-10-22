@@ -7,7 +7,7 @@ class orderSerice {
 
   async findOrders(pageNum, pageSize, status) {
     const { count, rows } = await Order.findAndCountAll({
-      attributes:['goods_info','total','order_number','status'],
+      attributes: ['goods_info', 'total', 'order_number', 'status'],
       where: {
         status,
       },
@@ -21,6 +21,19 @@ class orderSerice {
       total: count,
       list: rows,
     }
+  }
+
+  async updateOrder(id, status) {
+    return await Order.update(
+      {
+        status,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    )
   }
 }
 
